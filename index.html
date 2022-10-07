@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/node_modules/kaboom/dist/kaboom.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    const tile = 64
+    const row = 8
+    const col = 8
+    const canvas_width = tile * row
+    const canvas_height = tile * col
+  kaboom({
+    width : canvas_width,
+    height : canvas_height
+  })
+
+ 
+  for(c = 0; c < col; c++)
+  {
+    for(r = 0; r < row; r++)
+    {
+        cX = r * tile
+        rY = c * tile
+
+        tiles = add([
+          rect(tile,tile),
+          pos(cX,rY),
+          outline(1),
+          'tiles'
+        ])
+    }
+  }
+  let allTiles = get('tiles')
+  let countY = 0
+  let countX = 0
+  
+  
+
+  onKeyPress('down',() => {
+    if(countY < col * ( col - 1 ) )
+    {
+      countY += col
+      console.log(countY)
+      allTiles[countY + countX].color = MAGENTA
+      allTiles[countY - col + countX].color = WHITE
+    }
+
+  })
+  onKeyPress('up',() => {
+    if(countY > 0 )
+    {
+      countY -= col
+      allTiles[countY + countX].color = MAGENTA
+      allTiles[countY + col + countX].color = WHITE
+    }
+
+  })
+
+
+  onKeyPress('right', () => {
+    if(countX <= row - 2)
+    {
+        countX++
+        allTiles[countY + countX].color = MAGENTA
+        allTiles[countX - 1 + countY ].color = WHITE
+    }
+
+  })
+  onKeyPress('left', () => {
+    if(countX > 0)
+    {
+        countX--
+        allTiles[countY + countX].color = MAGENTA
+        allTiles[countX + 1 + countY ].color = WHITE
+    }
+
+  })
+
+
+    </script>
+</body>
+</html>

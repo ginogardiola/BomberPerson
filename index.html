@@ -42,62 +42,58 @@
     let countX = 0
 
     hero = add([
-      rect(tile,tile),
-      pos(0,0),
+      rect(tile, tile),
+      pos(0, 0),
       outline(1),
       color(CYAN),
       area(),
-   
+
     ])
 
 
-    
+
 
     onKeyPress('down', () => {
-      if (countY < col * (col - 1)) {
+      if (countY <= col * (col - 2) && cooldown == false) {
         countY += col
         allTiles[countY + countX].color = MAGENTA
         allTiles[countY - col + countX].color = WHITE
-
+        cooldown = true
         move = setInterval(() => {
-          if(hero.pos.y <= allTiles[countY + countX].pos.y )
-          {
-              hero.move(0,200)
-              
+          if (hero.pos.y <= allTiles[countY + countX].pos.y) {
+            hero.move(0, 200)
+
           }
-          else
-          {
-            setTimeout(() => { cooldown = false },1)
+          else {
+
             clearInterval(move)
-            
-            
+            setTimeout(() => { cooldown = false }, 1)
           }
-        },1)
+        }, 1)
       }
 
     })
     onKeyPress('up', () => {
-      if (countY > 0) {
+      if (countY >= 1 && cooldown == false) {
         countY -= col
         allTiles[countY + countX].color = MAGENTA
         allTiles[countY + col + countX].color = WHITE
+        cooldown = true
         move = setInterval(() => {
-          if(hero.pos.y >= allTiles[countY + countX].pos.y )
-          {
-              hero.move(0,-200)
-              
+          if (hero.pos.y >= allTiles[countY + countX].pos.y) {
+            hero.move(0, -200)
+
           }
-          else
-          {
-            setTimeout(() => { cooldown = false },1)
+          else {
+            setTimeout(() => { cooldown = false }, 1)
             clearInterval(move)
-            
-            
+
+
           }
-        },1)
-        
+        }, 1)
+
       }
-      
+
     })
 
 
@@ -108,21 +104,19 @@
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX - 1 + countY].color = WHITE
         cooldown = true
-        
+
         move = setInterval(() => {
-          if(hero.pos.x <= allTiles[countY + countX].pos.x )
-          {
-              hero.move(200,0)
-              
+          if (hero.pos.x <= allTiles[countY + countX].pos.x) {
+            hero.move(200, 0)
+
           }
-          else
-          {
-            setTimeout(() => { cooldown = false },1)
+          else {
+            setTimeout(() => { cooldown = false }, 1)
             clearInterval(move)
-            
-            
+
+
           }
-        },1)
+        }, 1)
       }
 
     })
@@ -134,23 +128,21 @@
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX + 1 + countY].color = WHITE
         cooldown = true
-      
 
-           move = setInterval(() => {
-          if(hero.pos.x >=  allTiles[countY + countX].pos.x )
-          {
-              hero.move(-200,0)
-              
+
+        move = setInterval(() => {
+          if (hero.pos.x >= allTiles[countY + countX].pos.x) {
+            hero.move(-200, 0)
+
           }
-          else
-          {
+          else {
             clearInterval(move)
-            setTimeout(() => { cooldown = false },1)
-            
-            
+            setTimeout(() => { cooldown = false }, 1)
+
+
           }
-          
-        },1)
+
+        }, 1)
       }
     })
 

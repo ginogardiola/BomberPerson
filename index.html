@@ -23,6 +23,16 @@
       height: canvas_height
     })
 
+    loadSprite('hero','/assets/sprites/dark_hair_boy_60x60.png',
+    {
+      sliceX: 18,
+      anims: {
+        run: {
+          from: 12,
+          to: 15
+        }
+      }
+    })
 
     for (c = 0; c < col; c++) {
       for (r = 0; r < row; r++) {
@@ -42,10 +52,16 @@
     let countX = 0
 
     hero = add([
-      rect(tile, tile),
+      sprite('hero'),
       pos(0, 0),
+      area(),
+
+    ])
+    tail = add([
+      rect(tile, tile),
+      pos(-64, 0),
       outline(1),
-      color(CYAN),
+      color(RED),
       area(),
 
     ])
@@ -55,6 +71,7 @@
 
     onKeyPress('down', () => {
       if (countY <= col * (col - 2) && cooldown == false) {
+        
         countY += col
         allTiles[countY + countX].color = MAGENTA
         allTiles[countY - col + countX].color = WHITE
@@ -100,20 +117,23 @@
     onKeyPress('right', () => {
 
       if (countX <= row - 2 && cooldown == false) {
+        hero.play('run')
         countX++
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX - 1 + countY].color = WHITE
         cooldown = true
+        hero.flipX(0)
 
         move = setInterval(() => {
           if (hero.pos.x <= allTiles[countY + countX].pos.x) {
             hero.move(200, 0)
 
+
           }
           else {
             setTimeout(() => { cooldown = false }, 1)
-            clearInterval(move)
 
+            clearInterval(move)
 
           }
         }, 1)
@@ -138,7 +158,6 @@
           else {
             clearInterval(move)
             setTimeout(() => { cooldown = false }, 1)
-
 
           }
 

@@ -30,6 +30,7 @@
     })
 
     loadSprite('tree','/assets/sprites/tree.png')
+    loadSprite('house','/assets/sprites/house.png')
     loadSprite('hero', '/assets/sprites/dark_hair_boy_60x60.png',
       {
         sliceX: 22,
@@ -52,6 +53,10 @@
           },
         }
       })
+    
+
+    
+
 
     for (c = 0; c < col; c++) {
       for (r = 0; r < row; r++) {
@@ -66,6 +71,7 @@
             'tiles',
             outline(1, rgb(color_skyblue))
           ])
+
         }
         else {
           tiles = add([
@@ -75,6 +81,8 @@
             outline(1, rgb(color_skyblue)),
             // color(color_blue)
           ])
+
+ 
         }
 
       }
@@ -191,7 +199,6 @@
         }, 1)
       }
     })
-
 
 
 

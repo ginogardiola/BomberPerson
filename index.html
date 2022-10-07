@@ -29,8 +29,12 @@
       background: color_cream
     })
 
-    loadSprite('tree','/assets/sprites/tree.png')
-    loadSprite('house','/assets/sprites/house.png')
+    loadSound("explosion_audio", "/assets/sounds/explode.mp3")
+    loadSound("ost", "/assets/sounds/ost.wav")
+    loadSound("walking", "/assets/sounds/walking.wav")
+    loadSound("tiktok", "assets/sounds/timer.mp3")
+    loadSprite('tree', '/assets/sprites/tree.png')
+    loadSprite('house', '/assets/sprites/house.png')
     loadSprite('hero', '/assets/sprites/dark_hair_boy_60x60.png',
       {
         sliceX: 22,
@@ -53,11 +57,30 @@
           },
         }
       })
-    
+    loadSprite('bomb', '/assets/sprites/bomb.png',
+      {
+        sliceX: 15,
 
-    
+        anims: {
+          tick: {
+            from: 0,
+            to: 14
+          },
+        }
+      })
 
 
+    loadSprite('explosion', '/assets/sprites/explosion.png',
+      {
+        sliceX: 8,
+
+        anims: {
+          aoe: {
+            from: 0,
+            to: 7
+          },
+        }
+      })
     for (c = 0; c < col; c++) {
       for (r = 0; r < row; r++) {
         cX = r * tile
@@ -82,7 +105,7 @@
             // color(color_blue)
           ])
 
- 
+
         }
 
       }
@@ -149,7 +172,8 @@
 
 
     onKeyPress('right', () => {
-      if (countX <= row - 2 && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63 ) {
+      if (countX <= row - 2 && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63) {
+        
         hero.play('runX')
         console.log(countX++)
         allTiles[countY + countX].color = rgb(color_skyblue)
@@ -200,9 +224,61 @@
       }
     })
 
+    let bomb_timer = 0
+    let sound = 0
+    onKeyPress('space', () => {
+      bomb = add([
+        sprite('bomb'),
+        pos(allTiles[countY + countX].pos.x, allTiles[countY + countX].pos.y),
+        'bomb'
+      ])
 
+      
+      tok = setInterval(() => {
+        if(sound <= 7)
+        {
+          sound++
+          play("tiktok");
+        }
+        else
+        {
+          clearInterval(tok)
+          sound = 0
+        }
+         
+      },200)
+      t = setInterval(() => {
+        bomb.play('tick');
+        
+        if (bomb_timer <= 15) { 
+          
+          console.log(bomb_timer++); }
+        else {
+          destroyAll('bomb');
+          explosion = add([
+            sprite('explosion'),
+            pos(bomb.pos.x - tile, bomb.pos.y - tile),
+          ])
+          shake(35)
+          
+          explosion.play('aoe');
+          bomb_timer = 0
+          
+          const music = play("explosion_audio", {
+            volume: 0.4,
+            loop: false
+          })
+          clearInterval(t)
+        }
+      }, 150)
 
-
+      shake(5)
+    })
+    
+    const music = play("ost", {
+            volume: 0.8,
+            loop: true
+          })
   </script>
 </body>
 

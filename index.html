@@ -16,6 +16,8 @@
     const col = 8
     const canvas_width = tile * row
     const canvas_height = tile * col
+    let cooldown = false
+
     kaboom({
       width: canvas_width,
       height: canvas_height
@@ -39,7 +41,15 @@
     let countY = 0
     let countX = 0
 
-    allTiles[0].color = MAGENTA
+    hero = add([
+      rect(tile,tile),
+      pos(0,0),
+      outline(1),
+      color(CYAN)
+    ])
+
+
+    
 
     onKeyPress('down', () => {
       if (countY < col * (col - 1)) {
@@ -60,21 +70,55 @@
 
 
     onKeyPress('right', () => {
-      if (countX <= row - 2) {
+
+      if (countX <= row - 2 && cooldown == false) {
         countX++
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX - 1 + countY].color = WHITE
+        cooldown = true
+        
+        move = setInterval(() => {
+          if(hero.pos.x <= allTiles[countY + countX].pos.x )
+          {
+              hero.move(200,0)
+          }
+          else
+          {
+            setTimeout(() => { cooldown = false },1)
+            clearInterval(move)
+            
+          }
+        },1)
       }
 
     })
+
+
     onKeyPress('left', () => {
-      if (countX > 0) {
+      if (countX > 0 && cooldown == false) {
         countX--
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX + 1 + countY].color = WHITE
+        cooldown = true
       }
 
+             move = setInterval(() => {
+          if(hero.pos.x >=  allTiles[countY + countX].pos.x )
+          {
+              hero.move(-200,0)
+          }
+          else
+          {
+            setTimeout(() => { cooldown = false },1)
+            clearInterval(move)
+            
+          }
+        },1)
+
     })
+
+
+
 
 
   </script>

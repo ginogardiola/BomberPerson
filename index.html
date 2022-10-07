@@ -27,10 +27,18 @@
     {
       sliceX: 18,
       anims: {
-        run: {
+        runX: {
           from: 12,
           to: 15
-        }
+        },
+        runY_fup: {
+          from: 0,
+          to: 3
+        },
+        runY_fdown: {
+          from: 6,
+          to: 9
+        },
       }
     })
 
@@ -71,7 +79,7 @@
 
     onKeyPress('down', () => {
       if (countY <= col * (col - 2) && cooldown == false) {
-        
+        hero.play('runY_fup')
         countY += col
         allTiles[countY + countX].color = MAGENTA
         allTiles[countY - col + countX].color = WHITE
@@ -92,6 +100,7 @@
     })
     onKeyPress('up', () => {
       if (countY >= 1 && cooldown == false) {
+        hero.play('runY_fdown')
         countY -= col
         allTiles[countY + countX].color = MAGENTA
         allTiles[countY + col + countX].color = WHITE
@@ -117,7 +126,7 @@
     onKeyPress('right', () => {
 
       if (countX <= row - 2 && cooldown == false) {
-        hero.play('run')
+        hero.play('runX')
         countX++
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX - 1 + countY].color = WHITE
@@ -144,6 +153,8 @@
 
     onKeyPress('left', () => {
       if (countX >= 1 && cooldown == false) {
+        hero.play('runX')
+        hero.flipX(1)
         countX--
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX + 1 + countY].color = WHITE

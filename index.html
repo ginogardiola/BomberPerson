@@ -45,7 +45,9 @@
       rect(tile,tile),
       pos(0,0),
       outline(1),
-      color(CYAN)
+      color(CYAN),
+      area(),
+   
     ])
 
 
@@ -81,11 +83,13 @@
           if(hero.pos.x <= allTiles[countY + countX].pos.x )
           {
               hero.move(200,0)
+              
           }
           else
           {
             setTimeout(() => { cooldown = false },1)
             clearInterval(move)
+            
             
           }
         },1)
@@ -95,26 +99,29 @@
 
 
     onKeyPress('left', () => {
-      if (countX > 0 && cooldown == false) {
+      if (countX >= 1 && cooldown == false) {
         countX--
         allTiles[countY + countX].color = MAGENTA
         allTiles[countX + 1 + countY].color = WHITE
         cooldown = true
-      }
+      
 
-             move = setInterval(() => {
+           move = setInterval(() => {
           if(hero.pos.x >=  allTiles[countY + countX].pos.x )
           {
               hero.move(-200,0)
+              
           }
           else
           {
-            setTimeout(() => { cooldown = false },1)
             clearInterval(move)
+            setTimeout(() => { cooldown = false },1)
+            
             
           }
+          
         },1)
-
+      }
     })
 
 

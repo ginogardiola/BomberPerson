@@ -17,16 +17,19 @@
     const canvas_width = tile * row
     const canvas_height = tile * col
     let cooldown = false
-    let color_cream = [246,241,210]
-    let color_flesh = [240,210,200]
-    let color_blue = [0,48,73]
-    let color_red = [214,40,40]
+    let color_cream = [246, 241, 210]
+    let color_flesh = [240, 210, 200]
+    let color_blue = [0, 48, 73]
+    let color_red = [214, 40, 40]
+    let color_skyblue = [184, 231, 202]
 
     kaboom({
       width: canvas_width,
-      height: canvas_height
+      height: canvas_height,
+      background: color_cream
     })
 
+    loadSprite('tree','/assets/sprites/tree.png')
     loadSprite('hero', '/assets/sprites/dark_hair_boy_60x60.png',
       {
         sliceX: 22,
@@ -54,26 +57,24 @@
       for (r = 0; r < row; r++) {
         cX = r * tile
         rY = c * tile
-        
-        if(r % 2 == 0 || c % 2 == 0)
-        {
+
+        if (r % 2 == 0 || c % 2 == 0) {
           tiles = add([
-          rect(tile, tile),
-          pos(cX, rY),
-          color(color_cream),
-          'tiles',
-          outline(1,rgb(184,231,202))
-        ])
+            rect(tile, tile),
+            pos(cX, rY),
+            color(color_cream),
+            'tiles',
+            outline(1, rgb(color_skyblue))
+          ])
         }
-        else
-        {
+        else {
           tiles = add([
-          rect(tile, tile),
-          pos(cX, rY),
-          'tiles',
-          outline(1,rgb(184,231,202)),
-          color(color_blue)
-        ])
+            sprite('tree'),
+            pos(cX, rY),
+            'tiles',
+            outline(1, rgb(color_skyblue)),
+            // color(color_blue)
+          ])
         }
 
       }
@@ -91,13 +92,13 @@
 
 
     hero.play('idle')
-    allTiles[0].color = rgb(color_flesh)
+    allTiles[0].color = rgb(color_skyblue)
 
     onKeyPress('down', () => {
-      if (countY <= col * (col - 2) && cooldown == false) {
+      if (countY <= col * (col - 2) && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7) {
         hero.play('runY_fup')
-        countY += col
-        allTiles[countY + countX].color = rgb(color_flesh)
+        console.log(countY += col)
+        allTiles[countY + countX].color = rgb(color_skyblue)
         allTiles[countY - col + countX].color = rgb(color_cream)
         cooldown = true
         move = setInterval(() => {
@@ -115,10 +116,10 @@
 
     })
     onKeyPress('up', () => {
-      if (countY >= 1 && cooldown == false) {
+      if (countY >= 1 && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7) {
         hero.play('runY_fdown')
-        countY -= col
-        allTiles[countY + countX].color = rgb(color_flesh)
+        console.log(countY -= col)
+        allTiles[countY + countX].color = rgb(color_skyblue)
         allTiles[countY + col + countX].color = rgb(color_cream)
         cooldown = true
         move = setInterval(() => {
@@ -140,10 +141,10 @@
 
 
     onKeyPress('right', () => {
-      if (countX <= row - 2 && cooldown == false) {
+      if (countX <= row - 2 && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63 ) {
         hero.play('runX')
         console.log(countX++)
-        allTiles[countY + countX].color = rgb(color_flesh)
+        allTiles[countY + countX].color = rgb(color_skyblue)
         allTiles[countX - 1 + countY].color = rgb(color_cream)
         cooldown = true
         hero.flipX(0)
@@ -167,11 +168,11 @@
 
 
     onKeyPress('left', () => {
-      if (countX >= 1 && cooldown == false) {
+      if (countX >= 1 && cooldown == false && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63) {
         hero.play('runX')
         hero.flipX(1)
-        countX--
-        allTiles[countY + countX].color = rgb(color_flesh)
+        console.log(countX--)
+        allTiles[countY + countX].color = rgb(color_skyblue)
         allTiles[countX + 1 + countY].color = rgb(color_cream)
         cooldown = true
 

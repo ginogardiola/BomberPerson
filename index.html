@@ -12,8 +12,8 @@
 <body>
   <script>
     const tile = 64
-    const row = 9 
-    const col = 9
+    const row = 13 
+    const col = 13
     const canvas_width = tile * row
     const canvas_height = tile * col + tile
     let cooldown = false
@@ -23,17 +23,20 @@
     let color_red = [214, 40, 40]
     let color_skyblue = [184, 231, 202]
     let bomb_cooldown = false
+    let flush = 0
 
     kaboom({
       width: canvas_width,
       height: canvas_height,
-      background: color_cream
+      background: color_cream,
+      font: "sink",
     })
 
     loadSound("explosion_audio", "/assets/sounds/explode.mp3")
     loadSound("ost", "/assets/sounds/ost.wav")
     loadSound("walking", "/assets/sounds/walking.wav")
     loadSound("tiktok", "assets/sounds/timer.mp3")
+    loadSprite('block', '/assets/sprites/metalblock.png')
     loadSprite('tree', '/assets/sprites/tree.png')
     loadSprite('house', '/assets/sprites/house.png')
     loadSprite('hero', '/assets/sprites/dark_hair_boy_60x60.png',
@@ -88,7 +91,7 @@
         rY = c * tile 
 
         if (r % 2 == 0 || c % 2 == 0) {
-          tiles = add([
+          tiles = tree = add([
             rect(tile, tile),
             pos(cX, rY),
             color(color_cream),
@@ -98,10 +101,12 @@
 
         }
         else {
-          tiles = add([
-            sprite('tree'),
+          tiles = tree = add([
+            sprite('block'),
             pos(cX, rY),
             'tiles',
+            area(),
+            solid(),
             outline(1, rgb(color_skyblue)),
             // color(color_blue)
           ])
@@ -115,14 +120,26 @@
     let countY = 0
     let countX = 0
 
-    hero = add([
+    hero = tree = add([
       sprite('hero'),
       pos(0, 0),
       area(),
+      
+      
 
     ])
 
+    let score = tree = add([
+    text("SCORE:0", {
+      size : 24,
+    }),
 
+  
+    pos(canvas_width - tile * 3, canvas_height - tile + 24 ),
+    color(color_blue),
+    { value: 0 },
+
+])
     hero.play('idle')
     allTiles[0].color = rgb(color_skyblue)
 
@@ -135,7 +152,7 @@
         cooldown = true
         move = setInterval(() => {
           if (hero.pos.y <= allTiles[countY + countX].pos.y) {
-            hero.move(0, 200)
+            hero.move(0, 700)
 
           }
           else {
@@ -156,7 +173,7 @@
         cooldown = true
         move = setInterval(() => {
           if (hero.pos.y >= allTiles[countY + countX].pos.y) {
-            hero.move(0, -200)
+            hero.move(0, -700)
 
           }
           else {
@@ -184,7 +201,7 @@
 
         move = setInterval(() => {
           if (hero.pos.x <= allTiles[countY + countX].pos.x) {
-            hero.move(200, 0)
+            hero.move(700, 0)
 
 
           }
@@ -196,7 +213,7 @@
           }
         }, 1)
       }
-
+     
     })
 
 
@@ -212,7 +229,7 @@
 
         move = setInterval(() => {
           if (hero.pos.x >= allTiles[countY + countX].pos.x) {
-            hero.move(-200, 0)
+            hero.move(-700, 0)
 
           }
           else {
@@ -232,7 +249,7 @@
 
       if(bomb_cooldown == false)
       {
-        bomb = add([
+        bomb = tree = add([
         sprite('bomb'),
         pos(allTiles[countY + countX].pos.x, allTiles[countY + countX].pos.y),
         'bomb'
@@ -255,28 +272,57 @@
       t = setInterval(() => {
         bomb.play('tick');
         
-        if (bomb_timer <= 15) { 
-          
+        if (bomb_timer <= 15 ) { 
+          flush++
           console.log(bomb_timer++); }
         else {
           destroyAll('bomb');
-          explosion = add([
+          explosion = tree = add([
             sprite('explosion'),
             pos(bomb.pos.x - tile, bomb.pos.y - tile),
+            'blast'
           ])
+          explosion5 = tree = add([
+            sprite('explosion'),
+            pos(bomb.pos.x - tile, bomb.pos.y ),
+            'blast'
+          ])
+          explosion2 = tree = add([
+            sprite('explosion'),
+            pos(bomb.pos.x - tile * 2, bomb.pos.y - tile),
+            'blast'
+          ])
+          explosion3 = tree = add([
+            sprite('explosion'),
+            pos(bomb.pos.x - tile , bomb.pos.y - tile * 2),
+            'blast'
+          ])
+          explosion4 = tree = add([
+            sprite('explosion'),
+            pos(bomb.pos.x + tile - tile  , bomb.pos.y - tile  ),
+            'blast'
+          ])
+
           shake(35)
           
           explosion.play('aoe');
+          explosion2.play('aoe');
+          explosion3.play('aoe');
+          explosion4.play('aoe');
+          explosion5.play('aoe');
+
           bomb_timer = 0
           
           const music = play("explosion_audio", {
-            volume: 0.4,
+            volume: 0.1,
             loop: false
           })
           
           bomb_cooldown = false
+          setTimeout(() => { destroyAll('blast') },1300) 
           clearInterval(t)
         }
+    
       }, 150)
 
       shake(5)
@@ -285,13 +331,155 @@
     })
     
 
+
+
+    // MANUALLY GENERATED CONTENT
+
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[3].pos.x,allTiles[3].pos.y),
+    'destructible',
+    
+    
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[4].pos.x,allTiles[4].pos.y),
+   'destructible',
+
+
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[5].pos.x,allTiles[5].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[7].pos.x,allTiles[7].pos.y),
+   'destructible',
+
+
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[6].pos.x,allTiles[20].pos.y),
+'destructible',
+   
+   
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[8].pos.x,allTiles[22].pos.y),
+ 'destructible',
+  
+    
+    
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[10].pos.x,allTiles[22].pos.y),
+   'destructible',
+
+
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[12].pos.x,allTiles[80].pos.y),
+ 'destructible',
+  
+  
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[10].pos.x,allTiles[80].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[10].pos.x,allTiles[75].pos.y),
+   'destructible',
+
+
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[8].pos.x,allTiles[75].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[6].pos.x,allTiles[75].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+
+
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[6].pos.x,allTiles[80].pos.y),
+   'destructible',
+
+
+    area()
+    ])
+
+
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[6].pos.x,allTiles[92].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[0].pos.x,allTiles[22].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+
+    tree = add([
+    sprite('tree'),
+    pos(allTiles[0].pos.x,allTiles[44].pos.y),
+    'destructible',
+
+    
+    area()
+    ])
+
+
     /*
+    
     const music = play("ost", {
-            volume: 0.3,
+            volume: 0.2,
             loop: true
           })
 
     */
+   
+
   </script>
 </body>
 

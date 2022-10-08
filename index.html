@@ -12,7 +12,7 @@
 <body>
   <script>
     const tile = 64
-    const row = 13 
+    const row = 13
     const col = 13
     const canvas_width = tile * row
     const canvas_height = tile * col + tile
@@ -88,7 +88,7 @@
     for (c = 0; c < col; c++) {
       for (r = 0; r < row; r++) {
         cX = r * tile
-        rY = c * tile 
+        rY = c * tile
 
         if (r % 2 == 0 || c % 2 == 0) {
           tiles = tree = add([
@@ -106,7 +106,7 @@
             pos(cX, rY),
             'tiles',
             area(),
-            solid(),
+
             outline(1, rgb(color_skyblue)),
             // color(color_blue)
           ])
@@ -124,27 +124,27 @@
       sprite('hero'),
       pos(0, 0),
       area(),
-      
-      
+
+
 
     ])
 
     let score = tree = add([
-    text("SCORE:0", {
-      size : 24,
-    }),
+      text("SCORE:0", {
+        size: 24,
+      }),
 
-  
-    pos(canvas_width - tile * 3, canvas_height - tile + 24 ),
-    color(color_blue),
-    { value: 0 },
 
-])
+      pos(canvas_width - tile * 3, canvas_height - tile + 24),
+      color(color_blue),
+      { value: 0 },
+
+    ])
     hero.play('idle')
     allTiles[0].color = rgb(color_skyblue)
 
     onKeyPress('down', () => {
-      if (countY <= col * (col - 2) && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7) {
+      if (countY <= col * (col - 2) && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7 && countX != 9 && countX != 11) {
         hero.play('runY_fup')
         console.log(countY += col)
         allTiles[countY + countX].color = rgb(color_skyblue)
@@ -165,7 +165,7 @@
 
     })
     onKeyPress('up', () => {
-      if (countY >= 1 && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7) {
+      if (countY >= 1 && cooldown == false && cooldown == false && countX != 1 && countX != 3 && countX != 5 && countX != 7 && countX != 9 && countX != 11) {
         hero.play('runY_fdown')
         console.log(countY -= col)
         allTiles[countY + countX].color = rgb(color_skyblue)
@@ -190,8 +190,8 @@
 
 
     onKeyPress('right', () => {
-      if (countX <= row - 2 && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63) {
-        
+      if (countX <= row - 2 && cooldown == false && countY != 13 && countY != 39 && countY != 65 && countY != 91 && countY != 117 && countY != 143) {
+
         hero.play('runX')
         console.log(countX++)
         allTiles[countY + countX].color = rgb(color_skyblue)
@@ -213,12 +213,12 @@
           }
         }, 1)
       }
-     
+
     })
 
 
     onKeyPress('left', () => {
-      if (countX >= 1 && cooldown == false && cooldown == false && countY != 1 && countY != 9 && countY != 27 && countY != 45 && countY != 63) {
+      if (countX >= 1 && cooldown == false && cooldown == false && countY != 13 && countY != 39 && countY != 65 && countY != 91 && countY != 117 && countY != 143) {
         hero.play('runX')
         hero.flipX(1)
         console.log(countX--)
@@ -247,227 +247,89 @@
 
     onKeyPress('space', () => {
 
-      if(bomb_cooldown == false)
-      {
+      if (bomb_cooldown == false) {
         bomb = tree = add([
-        sprite('bomb'),
-        pos(allTiles[countY + countX].pos.x, allTiles[countY + countX].pos.y),
-        'bomb'
-      ])
+          sprite('bomb'),
+          pos(allTiles[countY + countX].pos.x, allTiles[countY + countX].pos.y),
+          'bomb'
+        ])
         bomb_cooldown = true
-      
-      tok = setInterval(() => {
-        if(sound <= 7)
-        {
-          sound++
-          play("tiktok");
-        }
-        else
-        {
-          clearInterval(tok)
-          sound = 0
-        }
-         
-      },200)
-      t = setInterval(() => {
-        bomb.play('tick');
-        
-        if (bomb_timer <= 15 ) { 
-          flush++
-          console.log(bomb_timer++); }
-        else {
-          destroyAll('bomb');
-          explosion = tree = add([
-            sprite('explosion'),
-            pos(bomb.pos.x - tile, bomb.pos.y - tile),
-            'blast'
-          ])
-          explosion5 = tree = add([
-            sprite('explosion'),
-            pos(bomb.pos.x - tile, bomb.pos.y ),
-            'blast'
-          ])
-          explosion2 = tree = add([
-            sprite('explosion'),
-            pos(bomb.pos.x - tile * 2, bomb.pos.y - tile),
-            'blast'
-          ])
-          explosion3 = tree = add([
-            sprite('explosion'),
-            pos(bomb.pos.x - tile , bomb.pos.y - tile * 2),
-            'blast'
-          ])
-          explosion4 = tree = add([
-            sprite('explosion'),
-            pos(bomb.pos.x + tile - tile  , bomb.pos.y - tile  ),
-            'blast'
-          ])
 
-          shake(35)
-          
-          explosion.play('aoe');
-          explosion2.play('aoe');
-          explosion3.play('aoe');
-          explosion4.play('aoe');
-          explosion5.play('aoe');
+        tok = setInterval(() => {
+          if (sound <= 13) {
+            sound++
+            play("tiktok");
+          }
+          else {
+            clearInterval(tok)
+            sound = 0
+          }
 
-          bomb_timer = 0
-          
-          const music = play("explosion_audio", {
-            volume: 0.1,
-            loop: false
-          })
-          
-          bomb_cooldown = false
-          setTimeout(() => { destroyAll('blast') },1300) 
-          clearInterval(t)
-        }
-    
-      }, 150)
+        }, 200)
+        t = setInterval(() => {
+          bomb.play('tick');
 
-      shake(5)
+          if (bomb_timer <= 23) {
+            flush++
+            console.log(bomb_timer++);
+          }
+          else {
+            destroyAll('bomb');
+            explosion = tree = add([
+              sprite('explosion'),
+              pos(bomb.pos.x - tile, bomb.pos.y - tile),
+              'blast'
+            ])
+            explosion5 = tree = add([
+              sprite('explosion'),
+              pos(bomb.pos.x - tile, bomb.pos.y),
+              'blast'
+            ])
+            explosion2 = tree = add([
+              sprite('explosion'),
+              pos(bomb.pos.x - tile * 2, bomb.pos.y - tile),
+              'blast'
+            ])
+            explosion3 = tree = add([
+              sprite('explosion'),
+              pos(bomb.pos.x - tile, bomb.pos.y - tile * 2),
+              'blast'
+            ])
+            explosion4 = tree = add([
+              sprite('explosion'),
+              pos(bomb.pos.x + tile - tile, bomb.pos.y - tile),
+              'blast'
+            ])
+
+            shake(35)
+
+            explosion.play('aoe');
+            explosion2.play('aoe');
+            explosion3.play('aoe');
+            explosion4.play('aoe');
+            explosion5.play('aoe');
+
+            bomb_timer = 0
+
+            const music = play("explosion_audio", {
+              volume: 0.1,
+              loop: false
+            })
+
+            bomb_cooldown = false
+            setTimeout(() => { destroyAll('blast') }, 1300)
+            clearInterval(t)
+          }
+
+        }, 150)
+
+        shake(5)
       }
-      
+
     })
-    
 
 
 
-    // MANUALLY GENERATED CONTENT
-
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[3].pos.x,allTiles[3].pos.y),
-    'destructible',
-    
-    
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[4].pos.x,allTiles[4].pos.y),
-   'destructible',
-
-
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[5].pos.x,allTiles[5].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[7].pos.x,allTiles[7].pos.y),
-   'destructible',
-
-
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[6].pos.x,allTiles[20].pos.y),
-'destructible',
-   
-   
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[8].pos.x,allTiles[22].pos.y),
- 'destructible',
-  
-    
-    
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[10].pos.x,allTiles[22].pos.y),
-   'destructible',
-
-
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[12].pos.x,allTiles[80].pos.y),
- 'destructible',
-  
-  
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[10].pos.x,allTiles[80].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[10].pos.x,allTiles[75].pos.y),
-   'destructible',
-
-
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[8].pos.x,allTiles[75].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[6].pos.x,allTiles[75].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-
-
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[6].pos.x,allTiles[80].pos.y),
-   'destructible',
-
-
-    area()
-    ])
-
-
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[6].pos.x,allTiles[92].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[0].pos.x,allTiles[22].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
-
-    tree = add([
-    sprite('tree'),
-    pos(allTiles[0].pos.x,allTiles[44].pos.y),
-    'destructible',
-
-    
-    area()
-    ])
 
 
     /*
@@ -478,7 +340,7 @@
           })
 
     */
-   
+
 
   </script>
 </body>
